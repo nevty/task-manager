@@ -6,6 +6,13 @@ import App from './App';
 import {BrowserRouter} from "react-router-dom";
 import {createBrowserHistory} from "history"
 
+import firebase from "firebase/app";
+import "firebase/auth"
+import {firebaseConfig} from "./firebaseConfig";
+
+firebase.initializeApp(firebaseConfig);
+export const auth = firebase.auth();
+
 ReactDOM.render(
       <BrowserRouter history={createBrowserHistory}>
           <App/>
