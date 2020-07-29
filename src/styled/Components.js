@@ -6,10 +6,11 @@ export const Card = styled.div`
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
-    max-width: 230px;
-    min-height: 80px;
+    width: 230px;
+    min-height: 100px;
+    padding: 10px 12px;
+    border: 1px solid black;
     border-radius: 5px;
-    border: 1px solid black
 `
 
 export const Button = styled.button`
