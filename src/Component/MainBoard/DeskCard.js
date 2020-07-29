@@ -5,11 +5,10 @@ import {Card} from "../../styled/Components";
 
 const DeskCard = ({ title,id }) => {
     return (
-        <Link to={`desk/${id}`}>
-            <Card>
-                <h3>{title}</h3>
-            </Card>
-        </Link>
+        <Card>
+            <h3>{title}</h3>
+            <Link to={`desk/${id}`} className="desk_link"/>
+        </Card>
     )
 }
 
