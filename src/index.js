@@ -8,14 +8,20 @@ import {createBrowserHistory} from "history"
 
 import firebase from "firebase/app";
 import "firebase/auth"
+import "firebase/database"
 import {firebaseConfig} from "./firebaseConfig";
 
 firebase.initializeApp(firebaseConfig);
-export const auth = firebase.auth();
 
-ReactDOM.render(
-      <BrowserRouter history={createBrowserHistory}>
-          <App/>
-      </BrowserRouter>,
-  document.getElementById('root')
-);
+let app;
+firebase.auth().onAuthStateChanged(()=>{
+    if (!app) {
+        app = ReactDOM.render(
+            <BrowserRouter history={createBrowserHistory}>
+                <App/>
+            </BrowserRouter>,
+            document.getElementById('root')
+        );
+    }
+})
+
