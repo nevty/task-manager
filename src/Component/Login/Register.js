@@ -1,13 +1,13 @@
 import {Button, Form, Input, Typography} from "antd";
 import React from "react";
-import { LockOutlined, MailOutlined } from "@ant-design/icons";
+import {LockOutlined, MailOutlined, UserOutlined} from "@ant-design/icons";
 import authAPI from "../../api/auth";
 
-const Login = ({redirect})=>{
+const Register = ({redirect})=>{
     const [form] = Form.useForm();
-    const handleSubmit = async ({user_mail,user_password}) => {
+    const handleSubmit = async ({user_name,user_mail,user_password}) => {
         try {
-            await authAPI.login(user_mail,user_password);
+            await authAPI.register(user_name,user_mail,user_password);
             redirect('/')
         } catch (e) {}
         form.resetFields()
@@ -18,8 +18,21 @@ const Login = ({redirect})=>{
             onFinish={handleSubmit}
         >
             <Typography.Title level={3}>
-                Login
+                Register
             </Typography.Title>
+            <Form.Item
+                name="user_name"
+                rules={[
+                    {
+                        required: true,
+                        message: "This field required"
+                    },
+                ]}
+            >
+                <Input prefix={<UserOutlined/>}
+                       placeholder="Name"
+                />
+            </Form.Item>
             <Form.Item
                 name="user_mail"
                 rules={[
@@ -48,10 +61,10 @@ const Login = ({redirect})=>{
                 />
             </Form.Item>
             <Button block type="primary" htmlType="submit">
-                Login
+                Register
             </Button>
         </Form>
     )
 }
 
-export default Login
+export default Register
