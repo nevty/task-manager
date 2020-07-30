@@ -1,14 +1,19 @@
 import React, {useEffect, useState} from "react";
-import {storageAPI} from "../../api/api";
+import dbAPI from "../../api/api";
 import NewListButton from "../TaskBoard/NewListButton";
+import {List} from "antd";
 
 const DeskBoard = ({ match }) => {
     const [boardState, setBoard] = useState();
     const [listsState, setLists] = useState([]);
     const boardId = match.params.id;
     useEffect(() => {
-        setBoard(storageAPI.getDeskById(boardId));
-        setLists(storageAPI.getLists(boardId) || [])
+        async function fetchData(){
+            setBoard(await dbAPI().getDeskById(boardId));
+            setLists(await dbAPI().getLists(boardId) || [])
+        }
+        fetchData()
+            .catch(e=>console.log(e));
     }, [boardId]);
     useEffect(() => {
         if (boardState && boardState.title) {
@@ -17,14 +22,16 @@ const DeskBoard = ({ match }) => {
     }, [boardState]);
     return (
         <>
-            {listsState.map((list, index) => {
-                return (
-                    <div key={index}>
+            <List
+                grid={{gutter:8}}
+                dataSource={listsState}
+                header={<NewListButton setLists={setLists} boardId={boardId}/>}
+                renderItem={list => (
+                    <List.Item>
                         {list.title}
-                    </div>
-                )
-            })}
-            <NewListButton setLists={setLists} boardId={boardId}/>
+                    </List.Item>
+                )}
+            />
         </>
     )
 };

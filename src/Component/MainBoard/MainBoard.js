@@ -1,13 +1,17 @@
 import React, {useEffect, useState} from "react";
 import NewDeskButton from "./NewDeskButton";
-import {storageAPI} from "../../api/api";
 import DeskCard from "./DeskCard";
 import {List} from "antd";
+import dbAPI from "../../api/api"
 
 const MainBoard = () => {
     const [desksState, setDesks] = useState([]);
     useEffect(() => {
-        setDesks(storageAPI.getDesks() || [])
+        async function fetchData(){
+            setDesks(await dbAPI().getDesks() || [])
+        }
+        fetchData()
+            .catch(e=>console.log(e));
     }, []);
     return (
         <div className="board_main">

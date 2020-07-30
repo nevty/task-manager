@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {storageAPI} from "../../api/api";
+import dbAPI from "../../api/api";
 import {Card} from "../../styled/Components";
 import {Button, Input, Space} from "antd";
 
@@ -8,10 +8,10 @@ const NewDeskButton = ({ setDesks }) => {
     const [toggleState, toggle] = useState(false);
     const [inputV,changeV] = useState('');
 
-    const handleCreateDesk = () => {
+    const handleCreateDesk = async () => {
         if (inputV && inputV.trim()) {
-            storageAPI.createDesk({ title: inputV});
-            setDesks(storageAPI.getDesks())
+            dbAPI().createDesk({ title: inputV});
+            setDesks(await dbAPI().getDesks())
         }
         changeV("");
         toggle(false)

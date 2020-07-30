@@ -1,39 +1,45 @@
-import React, {useRef, useState} from "react";
-import {storageAPI} from "../../api/api";
-import {Button, Card} from "../../styled/Components";
+import React, { useState } from "react";
+import dbAPI from "../../api/api";
+import {Card} from "../../styled/Components";
+import {Input, Space, Button} from "antd";
 
 const NewListButton = ({ setLists ,boardId}) => {
-    const newTaskInput = useRef(null);
     const [toggleState, toggle] = useState(false);
+    const [inputV,changeV] = useState('');
 
-    const handleCreateList = () => {
-        let value = newTaskInput.current.value;
-        if (value && value.trim()) {
-            storageAPI.createList({ title: value},boardId);
-            setLists(storageAPI.getLists(boardId))
+    const handleCreateList = async () => {
+        if (inputV && inputV.trim()) {
+            dbAPI().createList({ title: inputV},boardId);
+            setLists(await dbAPI().getLists(boardId))
         }
-        newTaskInput.current.value = "";
+        changeV("");
+        toggle(false)
+    }
+
+    const handleCancel = ()=>{
+        changeV("");
+        toggle(false)
     }
 
     return (
         <Card className="list list_create">
             {
-                !toggleState && <>
-
+                (toggleState && <>
+                    <Input placeholder="Заголовок списка" value={inputV} onChange={e=>changeV(e.target.value)}
+                           onPressEnter={handleCreateList}/>
+                    <Space>
+                        <Button onClick={handleCancel}>
+                            Отменить
+                        </Button>
+                        <Button onClick={handleCreateList}>
+                            Создать
+                        </Button>
+                    </Space>
+                </>)
+                ||
+                <>
                     <Button onClick={() => toggle(true)}>
                         Добавить Колонку
-                    </Button>
-                </>
-            }
-            {
-                toggleState && <>
-                    <input placeholder="Заголовок списка" ref={newTaskInput}
-                           onKeyDown={(event => event.key === "Enter" ? handleCreateList() : null)}/>
-                    <Button onClick={handleCreateList}>
-                        Создать
-                    </Button>
-                    <Button onClick={() => toggle(false)}>
-                        Отменить
                     </Button>
                 </>
             }
