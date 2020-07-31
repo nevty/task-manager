@@ -16,23 +16,21 @@ const DeskBoard = ({ match }) => {
             .catch(e=>console.log(e));
     }, [boardId]);
     useEffect(() => {
-        if (boardState && boardState.title) {
-            document.title = boardState.title
-        } else document.title = ""
+        if (boardState && boardState.title) document.title = boardState.title
     }, [boardState]);
     return (
-        <>
+        <div className="board">
+            <NewListButton setLists={setLists} boardId={boardId}/>
             <List
                 grid={{gutter:8}}
                 dataSource={listsState}
-                header={<NewListButton setLists={setLists} boardId={boardId}/>}
                 renderItem={list => (
                     <List.Item>
                         {list.title}
                     </List.Item>
                 )}
             />
-        </>
+        </div>
     )
 };
 
