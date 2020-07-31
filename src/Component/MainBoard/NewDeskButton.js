@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import dbAPI from "../../api/api";
 import {Card} from "../../styled/Components";
-import {Button, Input, Space} from "antd";
+import {Button, Col, Input, Row} from "antd";
 
 
 const NewDeskButton = ({ setDesks }) => {
@@ -25,18 +25,26 @@ const NewDeskButton = ({ setDesks }) => {
     return (
         <Card className="desk desk_create">
             {
-                (toggleState && <>
-                    <Input placeholder="Название доски" value={inputV} onChange={e=>changeV(e.target.value)}
-                           onPressEnter={handleCreateDesk}/>
-                    <Space>
-                        <Button onClick={handleCancel}>
-                            Отменить
-                        </Button>
-                        <Button  onClick={handleCreateDesk}>
-                            Создать
-                        </Button>
-                    </Space>
-                </>)
+                (toggleState && <Row gutter={[0 , 8]}>
+                    <Col span="24">
+                        <Input placeholder="Название доски" value={inputV} onChange={e=>changeV(e.target.value)}
+                               onPressEnter={handleCreateDesk}/>
+                    </Col>
+                    <Col span="24">
+                        <Row gutter={[8]}>
+                            <Col span="12">
+                                <Button block onClick={handleCancel}>
+                                    Отменить
+                                </Button>
+                            </Col>
+                            <Col span="12">
+                                <Button block onClick={handleCreateDesk}>
+                                    Создать
+                                </Button>
+                            </Col>
+                        </Row>
+                    </Col>
+                </Row>)
                 ||
                 <>
                     <Button onClick={() => toggle(true)}>
