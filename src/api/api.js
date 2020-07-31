@@ -45,23 +45,44 @@ export const firebaseAPI = {
             .child(boardId)
             .once('value', snapshot => snapshot.val());
     },
-    // createTask(data,boardId) {
-    //     let task = JSON.parse(localStorage.getItem(boardId));
-    //     if (task === null) task = [];
-    //     data.id = generateId();
-    //     let newTask = [...task, data];
-    //     localStorage.setItem(boardId, JSON.stringify(newTask))
-    // },
-    // getLists(boardId) {
-    //     return JSON.parse(localStorage.getItem(boardId))
-    // },
-    // createList(data,boardId) {
-    //     let task = JSON.parse(localStorage.getItem(boardId));
-    //     if (task === null) task = [];
-    //     data.id = generateId();
-    //     let newTask = [...task, data];
-    //     localStorage.setItem(boardId, JSON.stringify(newTask))
-    // },
+    createTask(data,boardId) {
+        const uid = authAPI.getUid();
+        if (uid) {
+            this.boardRef()
+                .child(uid)
+                .child(boardId)
+                .push(data)
+        }
+    },
+    async getLists(boardId) {
+        const uid = authAPI.getUid();
+        if (uid) {
+            return await this.boardRef()
+                .child(uid)
+                .child(boardId)
+                .child('lists')
+                .once('value')
+                .then(snapshot => {
+                    let res = [];
+                    snapshot.forEach(child => {
+                        const {title} = child.val();
+                        const id = child.key;
+                        res.push({title,id})
+                    })
+                    return res
+                })
+        }
+    },
+    createList(data,boardId) {
+        const uid = authAPI.getUid();
+        if (uid) {
+            this.boardRef()
+                .child(uid)
+                .child(boardId)
+                .child('lists')
+                .push(data)
+        }
+    },
     async getDesks() {
         const uid = authAPI.getUid();
         if (uid) {
@@ -71,7 +92,9 @@ export const firebaseAPI = {
                 .then(snapshot => {
                     let res = [];
                     snapshot.forEach(child => {
-                        res.push({...child.val(),id:child.key})
+                        const {title} = child.val();
+                        const id = child.key;
+                        res.push({title,id})
                     })
                     return res
                 })
