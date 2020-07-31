@@ -22,7 +22,7 @@ const NewListButton = ({ setLists ,boardId}) => {
     }
 
     return (
-        <Card className="list list_create">
+        <div className="list list_create">
             {
                 (toggleState && <>
                     <Input placeholder="Заголовок списка" value={inputV} onChange={e=>changeV(e.target.value)}
@@ -43,7 +43,7 @@ const NewListButton = ({ setLists ,boardId}) => {
                     </Button>
                 </>
             }
-        </Card>
+        </div>
     )
 }
 

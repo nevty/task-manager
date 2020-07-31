@@ -1,16 +1,21 @@
 import styled from "styled-components";
+import {Card as CardAntD} from "antd";
 
-export const Card = styled.div`
+export const Card = styled(CardAntD)`
     position: relative;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
-    width: 230px;
-    min-height: 100px;
+    width: 270px;
+    min-height: 120px;
     padding: 10px 12px;
     border: 1px solid black;
     border-radius: 5px;
+    background: transparent;
+    .ant-card-body {
+        padding: 0;
+    }
 `
 
 export const Button = styled.button`
