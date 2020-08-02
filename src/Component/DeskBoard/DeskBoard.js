@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import dbAPI from "../../api/api";
+import dbAPI from "api/api";
 import NewListButton from "../TaskBoard/NewListButton";
 import {List} from "antd";
 

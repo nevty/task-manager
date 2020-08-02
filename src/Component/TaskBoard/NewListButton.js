@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import dbAPI from "../../api/api";
-import {Card} from "../../styled/Components";
+import dbAPI from "api/api";
 import {Input, Space, Button} from "antd";
 
 const NewListButton = ({ setLists ,boardId}) => {

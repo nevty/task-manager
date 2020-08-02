@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import NewDeskButton from "./NewDeskButton";
 import DeskCard from "./DeskCard";
 import {List} from "antd";
-import dbAPI from "../../api/api"
+import dbAPI from "api/api"
 
 const MainBoard = () => {
     const [desksState, setDesks] = useState([]);

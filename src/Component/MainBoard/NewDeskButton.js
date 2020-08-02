@@ -1,6 +1,6 @@
 import React, {useState} from "react";
-import dbAPI from "../../api/api";
-import {Card} from "../../styled/Components";
+import dbAPI from "api/api";
+import {Card} from "styles/styled/Components";
 import {Button, Col, Input, Row} from "antd";
 
 

@@ -1,7 +1,7 @@
 import { Col, Row} from "antd";
 import React from "react";
-import withAuthRedirect from "../hoc/withAuthRedirect";
-import authAPI from "../api/auth";
+import withAuthRedirect from "hoc/withAuthRedirect";
+import authAPI from "api/auth";
 
 const ProfilePage = ({history})=>{
 

@@ -1,6 +1,6 @@
 import React from "react";
-import LoginPage from "../pages/LoginPage";
-import authAPI from "../api/auth";
+import LoginPage from "pages/LoginPage";
+import authAPI from "api/auth";
 
 const withAuthRedirect = (Component)=>({...props})=>{
     const uid = authAPI.getUid();

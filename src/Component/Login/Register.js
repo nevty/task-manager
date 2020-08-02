@@ -1,7 +1,7 @@
 import {Button, Form, Input, Typography} from "antd";
 import React from "react";
 import {LockOutlined, MailOutlined, UserOutlined} from "@ant-design/icons";
-import authAPI from "../../api/auth";
+import authAPI from "api/auth";
 
 const Register = ({redirect})=>{
     const [form] = Form.useForm();
