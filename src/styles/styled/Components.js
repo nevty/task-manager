@@ -16,6 +16,14 @@ export const Card = styled(CardAntD)`
     .ant-card-body {
         padding: 0;
     }
+    
+    .actions {
+      position: absolute;
+      right: 8%;
+      top: 12%;
+      width: 18px;
+      height: 22px;
+    }
 `
 
 export const Button = styled.button`
