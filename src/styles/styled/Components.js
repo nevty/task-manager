@@ -21,8 +21,6 @@ export const Card = styled(CardAntD)`
       position: absolute;
       right: 8%;
       top: 12%;
-      width: 18px;
-      height: 22px;
     }
 `
 
