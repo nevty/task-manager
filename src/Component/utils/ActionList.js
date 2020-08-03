@@ -1,16 +1,23 @@
 import React, {useState} from 'react';
 import styled from "styled-components"
+import ClickAwayListener from "react-click-away-listener";
 
-const ActionList = ({ actions, toggleIcon, mode="click", className, ...props }) => {
+const ActionList = ({ actions, toggleIcon, mode = "click", className, ...props }) => {
     const [expanded, toggle] = useState(false);
 
     const handleClick = () => toggle(!expanded);
+    const handleOpen = () => toggle(true);
+    const handleClose = () => toggle(false);
     return (
-        <Wrapper className={className} {...props}>
+        <Wrapper
+            {...props}
+            className={className}
+            onClickAway={handleClose}
+        >
             <Toggle
                 onClick={mode === "click" ? handleClick : null}
-                onMouseEnter={mode === "hover" ? () => toggle(true) : null}
-                onMouseLeave={mode === "hover" ? () => toggle(false) : null}
+                onMouseEnter={mode === "hover" ? handleOpen : null}
+                onMouseLeave={mode === "hover" ? handleClose : null}
             >
                 {toggleIcon}
             </Toggle>
@@ -38,7 +45,13 @@ const Toggle = styled.button`
     padding: 0;
 `
 
-const Wrapper = styled.div`
+const ClickWrapper = ({ onClickAway, children, ...props }) => (
+    <ClickAwayListener onClickAway={onClickAway} {...props}>
+        {children}
+    </ClickAwayListener>
+)
+
+const Wrapper = styled(ClickWrapper)`
     position: relative;
     width: 18px;
     height: 22px;
@@ -61,9 +74,9 @@ const ListItem = styled.li`
     margin-right: 10px;
     cursor: pointer;
     ${({ expanded }) => expanded ?
-        "transform: scale(1)"
-        :
-        "transform: scale(0)"}
+    "transform: scale(1)"
+    :
+    "transform: scale(0)"}
 `
 
 export default ActionList
