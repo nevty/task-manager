@@ -1,13 +1,13 @@
-import React from "react";
+import React, {useState} from "react";
 import {Link} from "react-router-dom";
 import {Card} from "styles/styled/Components";
 import {DeleteFilled, EditFilled, MoreOutlined} from "@ant-design/icons";
-import {Typography, Modal} from "antd";
+import {Typography, Modal, Input} from "antd";
 import ActionList from "../utils/ActionList";
 
 const {confirm} = Modal;
 
-const DeskCard = ({title, id, deleteDesk}) => {
+const DeskCard = ({title, id, deleteDesk, changeDeskTitle}) => {
     const showDeleteConfirm = () => confirm({
         title: 'Are you sure delete this desk?',
         okText: 'Yes',
@@ -19,6 +19,15 @@ const DeskCard = ({title, id, deleteDesk}) => {
         onCancel() {
         },
     });
+    const [edit, setEdit] = useState(false);
+    const toggleEdit = () => setEdit(!edit);
+    const handleSubmit = (e) => {
+        const value = e.target.value.trim();
+        if (value) {
+            changeDeskTitle(id, value)
+        }
+        setEdit(false);
+    }
     return (
         <Card>
             <ActionList
@@ -26,9 +35,15 @@ const DeskCard = ({title, id, deleteDesk}) => {
                 toggleIcon={<MoreOutlined style={{fontSize: "16px", cursor: "pointer"}}/>}
                 actions={[
                     <DeleteFilled onClick={showDeleteConfirm} style={{fontSize: "16px", color: "#ff4d4f"}}/>,
-                    <EditFilled style={{fontSize: "16px"}}/>,
+                    <EditFilled onClick={toggleEdit} style={{fontSize: "16px"}}/>,
                 ]}/>
-            <Link to={`desk/${id}`} strong component={Typography.Link}>{title}</Link>
+
+            {
+                edit ?
+                    <Input defaultValue={title} onPressEnter={handleSubmit}/>
+                    :
+                    <Link to={`desk/${id}`} strong component={Typography.Link}>{title}</Link>
+            }
         </Card>
     )
 }
