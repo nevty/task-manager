@@ -16,11 +16,18 @@ const storageAPI = {
         return JSON.parse(localStorage.getItem(boardId))
     },
     createList(data, boardId) {
-        let task = JSON.parse(localStorage.getItem(boardId));
-        if (task === null) task = [];
+        let list = JSON.parse(localStorage.getItem(boardId));
+        if (list === null) list = [];
         data.id = generateId();
-        let newTask = [...task, data];
+        let newTask = [...list, data];
         localStorage.setItem(boardId, JSON.stringify(newTask))
+    },
+    async deleteList(boardId, id) {
+        const list = JSON.parse(localStorage.getItem(boardId));
+        list && list.length > 1 ?
+            localStorage.setItem(boardId, JSON.stringify(list.filter(L => L.id !== id)))
+            :
+            localStorage.removeItem(boardId)
     },
     async getDesks() {
         return JSON.parse(localStorage.getItem('desk'))
@@ -88,6 +95,17 @@ export const firebaseAPI = {
                 .push(data)
         }
     },
+    async deleteList(boardId, id) {
+        const uid = authAPI.getUid();
+        if (uid) {
+            return await this.boardRef()
+                .child(uid)
+                .child(boardId)
+                .child('lists')
+                .child(id)
+                .remove();
+        }
+    },
     async getDesks() {
         const uid = authAPI.getUid();
         if (uid) {
@@ -139,6 +157,6 @@ const generateId = () => {
     return (S4() + S4() + S4() + S4() + S4() + S4());
 }
 
-const db = () => authAPI.getUid() ? firebaseAPI : storageAPI;
+const dbAPI = () => authAPI.getUid() ? firebaseAPI : storageAPI;
 
-export default db;
+export default dbAPI;
