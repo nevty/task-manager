@@ -16,11 +16,18 @@ const storageAPI = {
         return JSON.parse(localStorage.getItem(boardId))
     },
     createList(data, boardId) {
-        let task = JSON.parse(localStorage.getItem(boardId));
-        if (task === null) task = [];
+        let list = JSON.parse(localStorage.getItem(boardId));
+        if (list === null) list = [];
         data.id = generateId();
-        let newTask = [...task, data];
+        let newTask = [...list, data];
         localStorage.setItem(boardId, JSON.stringify(newTask))
+    },
+    async deleteList(boardId, id) {
+        const list = JSON.parse(localStorage.getItem(boardId));
+        list && list.length > 1 ?
+            localStorage.setItem(boardId, JSON.stringify(list.filter(L => L.id !== id)))
+            :
+            localStorage.removeItem(boardId)
     },
     async getDesks() {
         return JSON.parse(localStorage.getItem('desk'))
@@ -35,6 +42,11 @@ const storageAPI = {
         data.id = generateId();
         let newDesk = [...desk, data];
         localStorage.setItem('desk', JSON.stringify(newDesk))
+    },
+    async deleteDesk(id) {
+        const desk = JSON.parse(localStorage.getItem('desk'));
+        if (desk && desk.length) localStorage.setItem('desk', JSON.stringify(desk.filter(d => d.id !== id)));
+        localStorage.removeItem(id);
     }
 };
 
@@ -45,7 +57,7 @@ export const firebaseAPI = {
             .child(boardId)
             .once('value', snapshot => snapshot.val());
     },
-    createTask(data,boardId) {
+    createTask(data, boardId) {
         const uid = authAPI.getUid();
         if (uid) {
             this.boardRef()
@@ -67,13 +79,13 @@ export const firebaseAPI = {
                     snapshot.forEach(child => {
                         const {title} = child.val();
                         const id = child.key;
-                        res.push({title,id})
+                        res.push({title, id})
                     })
                     return res
                 })
         }
     },
-    createList(data,boardId) {
+    createList(data, boardId) {
         const uid = authAPI.getUid();
         if (uid) {
             this.boardRef()
@@ -81,6 +93,17 @@ export const firebaseAPI = {
                 .child(boardId)
                 .child('lists')
                 .push(data)
+        }
+    },
+    async deleteList(boardId, id) {
+        const uid = authAPI.getUid();
+        if (uid) {
+            return await this.boardRef()
+                .child(uid)
+                .child(boardId)
+                .child('lists')
+                .child(id)
+                .remove();
         }
     },
     async getDesks() {
@@ -94,7 +117,7 @@ export const firebaseAPI = {
                     snapshot.forEach(child => {
                         const {title} = child.val();
                         const id = child.key;
-                        res.push({title,id})
+                        res.push({title, id})
                     })
                     return res
                 })
@@ -117,6 +140,15 @@ export const firebaseAPI = {
                 .child(uid)
                 .push({title})
         }
+    },
+    async deleteDesk(id) {
+        const uid = authAPI.getUid();
+        if (uid) {
+            return await this.boardRef()
+                .child(uid)
+                .child(id)
+                .remove();
+        }
     }
 }
 
@@ -125,6 +157,6 @@ const generateId = () => {
     return (S4() + S4() + S4() + S4() + S4() + S4());
 }
 
-const db = () => authAPI.getUid() ? firebaseAPI : storageAPI;
+const dbAPI = () => authAPI.getUid() ? firebaseAPI : storageAPI;
 
-export default db;
+export default dbAPI;
