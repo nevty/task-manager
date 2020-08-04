@@ -43,6 +43,13 @@ const storageAPI = {
         let newDesk = [...desk, data];
         localStorage.setItem('desk', JSON.stringify(newDesk))
     },
+    async changeDeskTitle(boardId, title) {
+        const desk = JSON.parse(localStorage.getItem('desk'));
+        if (desk && desk.length) localStorage.setItem('desk', JSON.stringify(desk.map((d) => {
+            if (d.id === boardId) d.title = title;
+            return d
+        })))
+    },
     async deleteDesk(id) {
         const desk = JSON.parse(localStorage.getItem('desk'));
         if (desk && desk.length) localStorage.setItem('desk', JSON.stringify(desk.filter(d => d.id !== id)));
@@ -148,6 +155,15 @@ export const firebaseAPI = {
                 .child(uid)
                 .child(id)
                 .remove();
+        }
+    },
+    async changeDeskTitle(boardId,title) {
+        const uid = authAPI.getUid();
+        if (uid) {
+            return await this.boardRef()
+                .child(uid)
+                .child(boardId)
+                .set({title})
         }
     }
 }
