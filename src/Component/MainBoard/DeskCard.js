@@ -7,14 +7,14 @@ import ActionList from "../utils/ActionList";
 
 const {confirm} = Modal;
 
-const DeskCard = ({title, id}) => {
+const DeskCard = ({title, id, deleteDesk}) => {
     const showDeleteConfirm = () => confirm({
         title: 'Are you sure delete this desk?',
         okText: 'Yes',
         okType: 'danger',
         cancelText: 'No',
         onOk() {
-            console.log('Delete');
+            deleteDesk(id)
         },
         onCancel() {
         },
@@ -25,7 +25,7 @@ const DeskCard = ({title, id}) => {
                 className="actions"
                 toggleIcon={<MoreOutlined style={{fontSize: "16px", cursor: "pointer"}}/>}
                 actions={[
-                    <DeleteFilled onClick={showDeleteConfirm} style={{fontSize: "16px", color: "red"}}/>,
+                    <DeleteFilled onClick={showDeleteConfirm} style={{fontSize: "16px", color: "#ff4d4f"}}/>,
                     <EditFilled style={{fontSize: "16px"}}/>,
                 ]}/>
             <Link to={`desk/${id}`} strong component={Typography.Link}>{title}</Link>

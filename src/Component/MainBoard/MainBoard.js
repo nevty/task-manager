@@ -14,6 +14,10 @@ const MainBoard = () => {
         fetchData()
             .catch(e => console.log(e));
     }, []);
+    const deleteDesk = async (id)=>{
+        await dbAPI().deleteDesk(id);
+        setDesks(await dbAPI().getDesks() || [])
+    }
     return (
         <div className="board board_main">
             <List
@@ -22,7 +26,11 @@ const MainBoard = () => {
                 header={<NewDeskButton setDesks={setDesks}/>}
                 renderItem={desk => (
                     <List.Item>
-                        <DeskCard title={desk.title} id={desk.id}/>
+                        <DeskCard
+                            id={desk.id}
+                            title={desk.title}
+                            deleteDesk={deleteDesk}
+                        />
                     </List.Item>
                 )}
             />
