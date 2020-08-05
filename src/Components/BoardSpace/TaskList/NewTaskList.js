@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import dbAPI from "api/api";
 import {Input, Space, Button} from "antd";
 
-const NewListButton = ({ setLists ,boardId}) => {
+const NewTaskList = ({ setLists ,boardId}) => {
     const [toggleState, toggle] = useState(false);
     const [inputV,changeV] = useState('');
 
@@ -46,4 +46,4 @@ const NewListButton = ({ setLists ,boardId}) => {
     )
 }
 
-export default NewListButton
+export default NewTaskList

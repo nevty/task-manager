@@ -1,11 +1,10 @@
 import React, {useEffect, useState} from "react";
 import dbAPI from "api/api";
-import NewListButton from "../TaskBoard/NewListButton";
-import {Button, List} from "antd";
-import {PlusCircleTwoTone} from "@ant-design/icons";
-import {StyledList} from "../../styles/styled/Components";
+import NewTaskList from "./TaskList/NewTaskList";
+import {List} from "antd";
+import TaskList from "./TaskList/TaskList";
 
-const DeskSpace = ({match}) => {
+const BoardSpace = ({match}) => {
     const [boardState, setBoard] = useState();
     const [listsState, setLists] = useState([]);
     const boardId = match.params.id;
@@ -23,7 +22,7 @@ const DeskSpace = ({match}) => {
     }, [boardState]);
     return (
         <div className="board">
-            <NewListButton setLists={setLists} boardId={boardId}/>
+            <NewTaskList setLists={setLists} boardId={boardId}/>
             <List
                 grid={{gutter: 8}}
                 dataSource={listsState}
@@ -37,16 +36,4 @@ const DeskSpace = ({match}) => {
     )
 };
 
-const TaskList = ({list}) => (
-    <StyledList
-        itemLayout="vertical"
-        bordered
-        header={list.title}
-    >
-        <Button block size="large" type="text">
-            Add task <PlusCircleTwoTone/>
-        </Button>
-    </StyledList>
-)
-
-export default DeskSpace
+export default BoardSpace

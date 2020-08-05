@@ -4,14 +4,14 @@ import {Card} from "styles/styled/Components";
 import {Button, Col, Input, Row} from "antd";
 
 
-const NewDeskButton = ({ setDesks }) => {
+const NewBoard = ({ setBoards }) => {
     const [toggleState, toggle] = useState(false);
     const [inputV,changeV] = useState('');
 
-    const handleCreateDesk = async () => {
+    const handleCreateBoard = async () => {
         if (inputV && inputV.trim()) {
             dbAPI().createDesk({ title: inputV});
-            setDesks(await dbAPI().getDesks())
+            setBoards(await dbAPI().getDesks())
         }
         changeV("");
         toggle(false)
@@ -23,12 +23,12 @@ const NewDeskButton = ({ setDesks }) => {
     }
 
     return (
-        <Card className="desk desk_create">
+        <Card>
             {
                 (toggleState && <Row gutter={[0 , 8]}>
                     <Col span="24">
                         <Input placeholder="Название доски" value={inputV} onChange={e=>changeV(e.target.value)}
-                               onPressEnter={handleCreateDesk}/>
+                               onPressEnter={handleCreateBoard}/>
                     </Col>
                     <Col span="24">
                         <Row gutter={[8]}>
@@ -38,7 +38,7 @@ const NewDeskButton = ({ setDesks }) => {
                                 </Button>
                             </Col>
                             <Col span="12">
-                                <Button block onClick={handleCreateDesk}>
+                                <Button block onClick={handleCreateBoard}>
                                     Создать
                                 </Button>
                             </Col>
@@ -56,4 +56,4 @@ const NewDeskButton = ({ setDesks }) => {
     )
 }
 
-export default NewDeskButton
+export default NewBoard

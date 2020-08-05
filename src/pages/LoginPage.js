@@ -1,7 +1,7 @@
 import {Card, Col, Row, Tabs} from "antd";
 import React from "react";
-import Login from "Component/Login/Login";
-import Register from "Component/Login/Register";
+import Login from "Components/Login/Login";
+import Register from "Components/Login/Register";
 
 const {TabPane} = Tabs
 

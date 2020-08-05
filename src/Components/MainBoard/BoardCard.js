@@ -7,14 +7,14 @@ import ActionList from "../utils/ActionList";
 
 const {confirm} = Modal;
 
-const DeskCard = ({title, id, deleteDesk, changeDeskTitle}) => {
+const BoardCard = ({title, id, deleteBoard, changeBoardTitle}) => {
     const showDeleteConfirm = () => confirm({
-        title: 'Are you sure delete this desk?',
+        title: 'Are you sure delete this board?',
         okText: 'Yes',
         okType: 'danger',
         cancelText: 'No',
         onOk() {
-            deleteDesk(id)
+            deleteBoard(id)
         },
         onCancel() {
         },
@@ -24,7 +24,7 @@ const DeskCard = ({title, id, deleteDesk, changeDeskTitle}) => {
     const handleSubmit = (e) => {
         const value = e.target.value.trim();
         if (value) {
-            changeDeskTitle(id, value)
+            changeBoardTitle(id, value)
         }
         setEdit(false);
     }
@@ -42,10 +42,10 @@ const DeskCard = ({title, id, deleteDesk, changeDeskTitle}) => {
                 edit ?
                     <Input defaultValue={title} onPressEnter={handleSubmit}/>
                     :
-                    <Link to={`desk/${id}`} strong component={Typography.Link}>{title}</Link>
+                    <Link to={`board/${id}`} strong component={Typography.Link}>{title}</Link>
             }
         </Card>
     )
 }
 
-export default DeskCard
+export default BoardCard
