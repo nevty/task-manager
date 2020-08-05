@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {Link, Route} from "react-router-dom";
 import MainBoard from "./Component/MainBoard/MainBoard";
-import DeskBoard from "./Component/DeskBoard/DeskBoard";
+import DeskSpace from "./Component/DeskSpace/DeskSpace";
 import {Grid, Layout, Menu} from "antd";
 import {LayoutOutlined, UserOutlined} from "@ant-design/icons"
 import LoginPage from "./pages/LoginPage";
@@ -20,7 +20,7 @@ function App() {
             <Layout>
                 <Content style={screens.sm ? null : {minWidth: "320px"}} className="Content">
                     <Route path="/" exact component={MainBoard}/>
-                    <Route path="/desk/:id" component={DeskBoard}/>
+                    <Route path="/desk/:id" component={DeskSpace}/>
                     <Route path="/profile" exact component={ProfilePage}/>
                     <Route path="/login" exact component={LoginPage}/>
                 </Content>

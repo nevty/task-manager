@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import {Card as CardAntD} from "antd";
+import {Card as CardAntD, List} from "antd";
 
 export const Card = styled(CardAntD)`
     position: relative;
@@ -21,6 +21,14 @@ export const Card = styled(CardAntD)`
       position: absolute;
       right: 8%;
       top: 12%;
+    }
+`
+
+export const StyledList = styled(List)`
+    width: 280px;
+    .ant-list-header {
+      overflow-x: hidden;
+      text-overflow: ellipsis;
     }
 `
 
