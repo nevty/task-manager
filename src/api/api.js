@@ -69,7 +69,16 @@ export const firebaseAPI = {
         return await this.boardRef()
             .child(boardId)
             .child('tasks')
-            .once('value', snapshot => snapshot.val());
+            .once('value')
+            .then(snapshot => {
+                let res = [];
+                snapshot.forEach(child => {
+                    const data = child.val();
+                    const id = child.key;
+                    res.push({...data, id})
+                })
+                return res
+            });
     },
     createTask(data, boardId) {
         const uid = authAPI.getUid();
@@ -92,9 +101,9 @@ export const firebaseAPI = {
                 .then(snapshot => {
                     let res = [];
                     snapshot.forEach(child => {
-                        const {title} = child.val();
+                        const data = child.val();
                         const id = child.key;
-                        res.push({title, id})
+                        res.push({...data, id})
                     })
                     return res
                 })

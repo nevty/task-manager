@@ -28,7 +28,7 @@ const BoardSpace = ({match}) => {
                 dataSource={listsState}
                 renderItem={list => (
                     <List.Item>
-                        <TaskList list={list}/>
+                        <TaskList list={list} boardId={boardId}/>
                     </List.Item>
                 )}
             />
