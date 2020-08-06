@@ -10,7 +10,7 @@ const BoardSpace = ({match}) => {
     const boardId = match.params.id;
     useEffect(() => {
         async function fetchData() {
-            setBoard(await dbAPI().getDeskById(boardId));
+            setBoard(await dbAPI().getBoardById(boardId));
             setLists(await dbAPI().getLists(boardId) || [])
         }
 
