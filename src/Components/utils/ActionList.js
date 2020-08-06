@@ -43,6 +43,7 @@ const Toggle = styled.button`
     border: none;
     margin: 0;
     padding: 0;
+    background: transparent;
 `
 
 const ClickWrapper = ({ onClickAway, children, ...props }) => (

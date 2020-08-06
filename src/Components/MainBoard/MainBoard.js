@@ -25,7 +25,7 @@ const MainBoard = () => {
     return (
         <div className="board board_main">
             <List
-                grid={{gutter: 24}}
+                grid={{gutter: 24,xs:2}}
                 dataSource={boardsState}
                 header={<NewBoard setBoards={setBoards}/>}
                 renderItem={board => (

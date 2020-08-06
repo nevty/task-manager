@@ -22,6 +22,10 @@ export const Card = styled(CardAntD)`
       right: 8%;
       top: 12%;
     }
+    
+    @media (max-width: 576px) {
+      width: 100%;
+    }
 `
 
 export const StyledList = styled(List)`
