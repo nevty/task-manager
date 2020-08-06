@@ -10,8 +10,8 @@ const NewBoard = ({ setBoards }) => {
 
     const handleCreateBoard = async () => {
         if (inputV && inputV.trim()) {
-            dbAPI().createDesk({ title: inputV});
-            setBoards(await dbAPI().getDesks())
+            dbAPI().createBoard({ title: inputV});
+            setBoards(await dbAPI().getBoards())
         }
         changeV("");
         toggle(false)

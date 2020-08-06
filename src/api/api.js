@@ -3,56 +3,62 @@ import firebase from "firebase";
 
 const storageAPI = {
     async getTasks(boardId) {
-        return JSON.parse(localStorage.getItem(boardId))
+        const board = JSON.parse(localStorage.getItem(boardId));
+        return board && board.tasks;
     },
     createTask(data, boardId) {
-        let task = JSON.parse(localStorage.getItem(boardId));
-        if (task === null) task = [];
+        let board = JSON.parse(localStorage.getItem(boardId));
         data.id = generateId();
-        let newTask = [...task, data];
-        localStorage.setItem(boardId, JSON.stringify(newTask))
+        if (!board.tasks) board.tasks = [];
+        let newBoard = {...board, tasks: [...board.tasks, data]};
+        localStorage.setItem(boardId, JSON.stringify(newBoard))
     },
     async getLists(boardId) {
-        return JSON.parse(localStorage.getItem(boardId))
+        const board = JSON.parse(localStorage.getItem(boardId));
+        return board && board.lists;
     },
     createList(data, boardId) {
-        let list = JSON.parse(localStorage.getItem(boardId));
-        if (list === null) list = [];
+        let board = JSON.parse(localStorage.getItem(boardId));
+        if (board === null) board = {lists: []};
         data.id = generateId();
-        let newTask = [...list, data];
-        localStorage.setItem(boardId, JSON.stringify(newTask))
+        let newBoard = {...board, lists: [...board.lists, data]};
+        localStorage.setItem(boardId, JSON.stringify(newBoard))
     },
     async deleteList(boardId, id) {
-        const list = JSON.parse(localStorage.getItem(boardId));
-        list && list.length > 1 ?
-            localStorage.setItem(boardId, JSON.stringify(list.filter(L => L.id !== id)))
+        const board = JSON.parse(localStorage.getItem(boardId));
+        const lists = board.lists;
+        lists && lists.length > 1 ?
+            localStorage.setItem(
+                boardId,
+                JSON.stringify({...board, lists: [...lists.filter(L => L.id !== id)]})
+            )
             :
             localStorage.removeItem(boardId)
     },
-    async getDesks() {
-        return JSON.parse(localStorage.getItem('desk'))
+    async getBoards() {
+        return JSON.parse(localStorage.getItem('boards'))
     },
-    async getDeskById(id) {
-        const desk = JSON.parse(localStorage.getItem('desk'));
-        if (desk && desk.length) return desk.find(d => d.id === id)
+    async getBoardById(id) {
+        const boards = JSON.parse(localStorage.getItem('boards'));
+        if (boards && boards.length) return boards.find(d => d.id === id)
     },
-    createDesk(data) {
-        let desk = JSON.parse(localStorage.getItem('desk'));
-        if (desk === null) desk = [];
+    createBoard(data) {
+        let boards = JSON.parse(localStorage.getItem('boards'));
+        if (boards === null) boards = [];
         data.id = generateId();
-        let newDesk = [...desk, data];
-        localStorage.setItem('desk', JSON.stringify(newDesk))
+        let newBoards = [...boards, data];
+        localStorage.setItem('boards', JSON.stringify(newBoards))
     },
-    async changeDeskTitle(boardId, title) {
-        const desk = JSON.parse(localStorage.getItem('desk'));
-        if (desk && desk.length) localStorage.setItem('desk', JSON.stringify(desk.map((d) => {
+    async changeBoardTitle(boardId, title) {
+        const boards = JSON.parse(localStorage.getItem('boards'));
+        if (boards && boards.length) localStorage.setItem('boards', JSON.stringify(boards.map((d) => {
             if (d.id === boardId) d.title = title;
             return d
         })))
     },
-    async deleteDesk(id) {
-        const desk = JSON.parse(localStorage.getItem('desk'));
-        if (desk && desk.length) localStorage.setItem('desk', JSON.stringify(desk.filter(d => d.id !== id)));
+    async deleteBoard(id) {
+        const boards = JSON.parse(localStorage.getItem('boards'));
+        if (boards && boards.length) localStorage.setItem('boards', JSON.stringify(boards.filter(d => d.id !== id)));
         localStorage.removeItem(id);
     }
 };
@@ -62,6 +68,7 @@ export const firebaseAPI = {
     async getTasks(boardId) {
         return await this.boardRef()
             .child(boardId)
+            .child('tasks')
             .once('value', snapshot => snapshot.val());
     },
     createTask(data, boardId) {
@@ -70,6 +77,7 @@ export const firebaseAPI = {
             this.boardRef()
                 .child(uid)
                 .child(boardId)
+                .child('tasks')
                 .push(data)
         }
     },
@@ -113,7 +121,7 @@ export const firebaseAPI = {
                 .remove();
         }
     },
-    async getDesks() {
+    async getBoards() {
         const uid = authAPI.getUid();
         if (uid) {
             return await this.boardRef()
@@ -130,7 +138,7 @@ export const firebaseAPI = {
                 })
         }
     },
-    async getDeskById(id) {
+    async getBoardById(id) {
         const uid = authAPI.getUid();
         if (uid) {
             return await this.boardRef()
@@ -140,7 +148,7 @@ export const firebaseAPI = {
                 .then(snapshot => snapshot.val())
         }
     },
-    createDesk({title}) {
+    createBoard({title}) {
         const uid = authAPI.getUid();
         if (uid) {
             this.boardRef()
@@ -148,7 +156,7 @@ export const firebaseAPI = {
                 .push({title})
         }
     },
-    async deleteDesk(id) {
+    async deleteBoard(id) {
         const uid = authAPI.getUid();
         if (uid) {
             return await this.boardRef()
@@ -157,7 +165,7 @@ export const firebaseAPI = {
                 .remove();
         }
     },
-    async changeDeskTitle(boardId,title) {
+    async changeBoardTitle(boardId, title) {
         const uid = authAPI.getUid();
         if (uid) {
             return await this.boardRef()

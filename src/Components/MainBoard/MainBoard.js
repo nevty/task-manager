@@ -8,19 +8,19 @@ const MainBoard = () => {
     const [boardsState, setBoards] = useState([]);
     useEffect(() => {
         async function fetchData() {
-            setBoards(await dbAPI().getDesks() || [])
+            setBoards(await dbAPI().getBoards() || [])
         }
 
         fetchData()
             .catch(e => console.log(e));
     }, []);
     const deleteBoard = async (id) => {
-        await dbAPI().deleteDesk(id);
-        setBoards(await dbAPI().getDesks() || [])
+        await dbAPI().deleteBoard(id);
+        setBoards(await dbAPI().getBoards() || [])
     }
     const changeBoardTitle = async (boardId, title) => {
-        await dbAPI().changeDeskTitle(boardId, title);
-        setBoards(await dbAPI().getDesks() || []);
+        await dbAPI().changeBoardTitle(boardId, title);
+        setBoards(await dbAPI().getBoards() || []);
     }
     return (
         <div className="board board_main">
