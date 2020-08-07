@@ -27,8 +27,11 @@ const InputToggle = (
         ?
         <Row gutter={[0 , 8]} justify="center">
             <Col span="22">
-                <Input placeholder={placeholder} value={inputV} onChange={e=>changeV(e.target.value)}
-                       onPressEnter={onSubmit}/>
+                <Input placeholder={placeholder} autoFocus
+                       onBlur={!inputV.trim() ? handleCancel : null}
+                       value={inputV} onChange={e=>changeV(e.target.value)}
+                       onPressEnter={onSubmit}
+                />
             </Col>
             <Col span="22">
                 <Row gutter={[8]}>
