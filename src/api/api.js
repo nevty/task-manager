@@ -1,5 +1,5 @@
 import authAPI from "./auth";
-import firebase from "firebase";
+import firebase from "firebase/app";
 
 const storageAPI = {
     async getTasks(boardId) {
