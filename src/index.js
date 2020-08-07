@@ -7,11 +7,8 @@ import {BrowserRouter} from "react-router-dom";
 import {createBrowserHistory} from "history"
 
 import firebase from "firebase/app";
-import "firebase/auth"
-import "firebase/database"
-import {firebaseConfig} from "./firebaseConfig";
-
-firebase.initializeApp(firebaseConfig);
+import {firebaseInit} from "./firebaseConfig";
+firebaseInit();
 
 let app;
 firebase.auth().onAuthStateChanged(()=>{
