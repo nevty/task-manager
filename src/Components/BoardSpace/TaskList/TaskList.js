@@ -1,14 +1,13 @@
 import {StyledList} from "styles/styled/Components";
-import {Button, Input, Space} from "antd";
-import {PlusCircleTwoTone} from "@ant-design/icons";
 import React, {useEffect, useState} from "react";
 import dbAPI from "api/api";
+import NewTask from "./NewTask";
 
 const TaskList = ({list, boardId}) => {
-    const [tasksState, setTasksState] = useState([]);
+    const [tasks, setTasks] = useState([]);
     useEffect(() => {
         async function fetchData() {
-            setTasksState(await dbAPI().getTasks(boardId) || [])
+            setTasks(await dbAPI().getTasks(boardId) || [])
         }
 
         fetchData()
@@ -19,32 +18,15 @@ const TaskList = ({list, boardId}) => {
             itemLayout="vertical"
             bordered
             header={list.title}
+            dataSource={tasks}
+            renderItem={task=>(
+                <StyledList.Item>
+                    {task.title}
+                </StyledList.Item>
+            )}
         >
-            <NewTask/>
+            <NewTask setTasks={setTasks} boardId={boardId}/>
         </StyledList>
-    )
-}
-
-const NewTask = () => {
-    const [toggleState, toggle] = useState(false);
-    const [inputV, changeV] = useState('');
-    const handleCancel = ()=>{
-        toggle(false)
-    }
-    return (
-
-        <>
-            {
-                (toggleState && <Space>
-                    <Input/>
-                    <Button onClick={handleCancel}>X</Button>
-                </Space>)
-                ||
-                <Button onClick={()=>toggle(!toggleState)} block size="large" type="text">
-                    Add task <PlusCircleTwoTone/>
-                </Button>
-            }
-        </>
     )
 }
 

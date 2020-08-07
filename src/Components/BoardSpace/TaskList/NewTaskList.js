@@ -1,7 +1,6 @@
-import React, { useState } from "react";
+import React  from "react";
 import dbAPI from "api/api";
 import InputToggle from "Components/utils/InputToggle";
-import {Button} from "antd";
 
 const NewTaskList = ({ setLists ,boardId}) => {
     const createList = async (title) => {

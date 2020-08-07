@@ -1,10 +1,12 @@
 import React, {useState} from "react";
-import dbAPI from "api/api";
-import {Card} from "styles/styled/Components";
 import {Button, Col, Input, Row} from "antd";
 
-
-const InputToggle = ({ handleSubmit, placeholder, showButtonPlaceholder,showButtonProps }) => {
+const InputToggle = (
+    {
+        handleSubmit, placeholder,
+        showButtonPlaceholder,showButtonProps,
+        showButtonPrepend=<></>,showButtonAppend=<></>,
+    }) => {
     const [toggleState, toggle] = useState(false);
     const [inputV,changeV] = useState('');
 
@@ -23,12 +25,12 @@ const InputToggle = ({ handleSubmit, placeholder, showButtonPlaceholder,showButt
 
     return toggleState
         ?
-        <Row gutter={[0 , 8]}>
-            <Col span="24">
+        <Row gutter={[0 , 8]} justify="center">
+            <Col span="22">
                 <Input placeholder={placeholder} value={inputV} onChange={e=>changeV(e.target.value)}
                        onPressEnter={onSubmit}/>
             </Col>
-            <Col span="24">
+            <Col span="22">
                 <Row gutter={[8]}>
                     <Col span="12">
                         <Button block onClick={handleCancel}>
@@ -45,7 +47,9 @@ const InputToggle = ({ handleSubmit, placeholder, showButtonPlaceholder,showButt
         </Row>
         :
         <Button onClick={() => toggle(true)} {...showButtonProps}>
+            {showButtonPrepend}
             {showButtonPlaceholder}
+            {showButtonAppend}
         </Button>
 }
 
