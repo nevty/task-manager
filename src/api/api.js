@@ -2,13 +2,14 @@ import authAPI from "./auth";
 import firebase from "firebase/app";
 
 const storageAPI = {
-    async getTasks(boardId) {
+    async getTasks(boardId,listId) {
         const board = JSON.parse(localStorage.getItem(boardId));
-        return board && board.tasks;
+        return board && board.tasks.filter(t=>t.list_id === listId);
     },
-    createTask(data, boardId) {
+    createTask(data, boardId,listId) {
         let board = JSON.parse(localStorage.getItem(boardId));
         data.id = generateId();
+        data.list_id = listId;
         if (!board.tasks) board.tasks = [];
         let newBoard = {...board, tasks: [...board.tasks, data]};
         localStorage.setItem(boardId, JSON.stringify(newBoard))
@@ -65,28 +66,34 @@ const storageAPI = {
 
 export const firebaseAPI = {
     boardRef: () => firebase.database().ref(`/boards`),
-    async getTasks(boardId) {
-        return await this.boardRef()
-            .child(boardId)
-            .child('tasks')
-            .once('value')
-            .then(snapshot => {
-                let res = [];
-                snapshot.forEach(child => {
-                    const data = child.val();
-                    const id = child.key;
-                    res.push({...data, id})
-                })
-                return res
-            });
+    async getTasks(boardId,listId) {
+        const uid = authAPI.getUid();
+        if (uid) {
+            return await this.boardRef()
+                .child(uid)
+                .child(boardId)
+                .child('tasks')
+                .child(listId)
+                .once('value')
+                .then(snapshot => {
+                    let res = [];
+                    snapshot.forEach(child => {
+                        const data = child.val();
+                        const id = child.key;
+                        res.push({...data, id})
+                    })
+                    return res
+                });
+        }
     },
-    createTask(data, boardId) {
+    createTask(data, boardId,list_id) {
         const uid = authAPI.getUid();
         if (uid) {
             this.boardRef()
                 .child(uid)
                 .child(boardId)
                 .child('tasks')
+                .child(list_id)
                 .push(data)
         }
     },

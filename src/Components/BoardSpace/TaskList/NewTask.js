@@ -3,10 +3,10 @@ import InputToggle from "Components/utils/InputToggle";
 import {PlusCircleTwoTone} from "@ant-design/icons";
 import React from "react";
 
-const NewTask = ({setTasks,boardId}) => {
+const NewTask = ({setTasks,boardId,listId}) => {
     const createTask = async (title)=>{
-        dbAPI().createTask({title},boardId);
-        setTasks(await dbAPI().getTasks(boardId))
+        dbAPI().createTask({title},boardId,listId);
+        setTasks(await dbAPI().getTasks(boardId,listId))
     }
 
     return (

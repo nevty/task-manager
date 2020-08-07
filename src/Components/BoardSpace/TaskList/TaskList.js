@@ -7,7 +7,7 @@ const TaskList = ({list, boardId}) => {
     const [tasks, setTasks] = useState([]);
     useEffect(() => {
         async function fetchData() {
-            setTasks(await dbAPI().getTasks(boardId) || [])
+            setTasks(await dbAPI().getTasks(boardId,list.id) || [])
         }
 
         fetchData()
@@ -25,7 +25,7 @@ const TaskList = ({list, boardId}) => {
                 </StyledList.Item>
             )}
         >
-            <NewTask setTasks={setTasks} boardId={boardId}/>
+            <NewTask setTasks={setTasks} boardId={boardId} listId={list && list.id}/>
         </StyledList>
     )
 }
