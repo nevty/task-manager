@@ -31,7 +31,7 @@ const authAPI = {
     async loginWithPopUp(method) {
         switch (method) {
             case "google": {
-                await firebase.auth().signInWithPopup(provider)
+                return await firebase.auth().signInWithPopup(provider)
                     .then(({additionalUserInfo}) => {
                         if (additionalUserInfo && additionalUserInfo.isNewUser) {
                             const uid = this.getUid();
@@ -40,8 +40,9 @@ const authAPI = {
                                 picture: additionalUserInfo.profile.picture
                             })
                         }
+                        return {result: true}
                     })
-                    .catch(e=>console.log(e))
+                    .catch(e=>({result: false}))
             }
         }
 

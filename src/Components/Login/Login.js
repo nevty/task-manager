@@ -1,17 +1,25 @@
-import {Button, Form, Input, Typography} from "antd";
 import React from "react";
-import { LockOutlined, MailOutlined } from "@ant-design/icons";
+import {Button, Divider, Form, Input, Space, Typography} from "antd";
+import {GoogleOutlined, LockOutlined, MailOutlined} from "@ant-design/icons";
 import authAPI from "api/auth";
 
-const Login = ({redirect})=>{
+const Login = ({ redirect }) => {
     const [form] = Form.useForm();
-    const handleSubmit = async ({user_mail,user_password}) => {
+    const handleSubmit = async ({ user_mail, user_password }) => {
         try {
-            await authAPI.login(user_mail,user_password);
+            await authAPI.login(user_mail, user_password);
             redirect('/')
-        } catch (e) {}
+        } catch (e) {
+        }
         form.resetFields()
-    }
+    };
+    const signPopup = (method) => {
+        authAPI.loginWithPopUp(method)
+            .then(({ result }) => {
+                if (result) redirect('/');
+            });
+        form.resetFields();
+    };
     return (
         <Form
             form={form}
@@ -50,6 +58,10 @@ const Login = ({redirect})=>{
             <Button block type="primary" htmlType="submit">
                 Login
             </Button>
+            <Divider>or with</Divider>
+            <Space>
+                <Button onClick={() => signPopup('google')} shape="circle" icon={<GoogleOutlined/>}/>
+            </Space>
         </Form>
     )
 }
