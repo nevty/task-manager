@@ -187,7 +187,7 @@ export const firebaseAPI = {
             return await this.boardRef()
                 .child(uid)
                 .child(boardId)
-                .set({title})
+                .update({title})
         }
     }
 }
