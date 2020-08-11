@@ -1,21 +1,31 @@
 import React, {useEffect, useState} from "react";
+import {Checkbox, Typography} from "antd";
 import {TaskItem, TaskList} from "styles/styled/Components";
-import dbAPI from "api/api";
+import ActionList from "Components/utils/ActionList";
 import NewTask from "./NewTask";
-import {Typography} from "antd";
-import {DeleteFilled, EditFilled, MoreOutlined} from "@ant-design/icons";
-import ActionList from "../../utils/ActionList";
+import dbAPI from "api/api";
+import {DeleteFilled, MoreOutlined} from "@ant-design/icons";
 
 const Tasks = ({list, boardId}) => {
     const [tasks, setTasks] = useState([]);
+    async function fetchTasks(boardId,listId) {
+        setTasks(await dbAPI().getTasks(boardId,listId) || [])
+    }
     useEffect(() => {
-        async function fetchData() {
-            setTasks(await dbAPI().getTasks(boardId,list.id) || [])
-        }
-
-        fetchData()
+        fetchTasks(boardId,list.id)
             .catch(e => console.log(e))
-    }, [boardId])
+    }, [boardId,list.id]);
+
+    const toggleTask = async (boolean, taskId) => {
+        dbAPI().toggleTask(!boolean, taskId, list.id, boardId);
+        fetchTasks(boardId, list.id)
+            .catch(e => console.log(e))
+    }
+    const deleteTask = async (taskId) => {
+        dbAPI().deleteTask(taskId, list.id, boardId);
+        fetchTasks(boardId, list.id)
+            .catch(e => console.log(e))
+    }
     return (
         <TaskList
             itemLayout="vertical"
@@ -29,10 +39,12 @@ const Tasks = ({list, boardId}) => {
                     </Typography.Text>
                     <ActionList
                         className="actions"
-                        toggleIcon={<MoreOutlined style={{fontSize: "16px", cursor: "pointer"}}/>}
+                        direction="right"
+                        mode="hover"
+                        toggleIcon={<MoreOutlined style={{cursor: "pointer"}}/>}
                         actions={[
-                            <DeleteFilled  style={{fontSize: "16px", color: "#ff4d4f"}}/>,
-                            <EditFilled  style={{fontSize: "16px"}}/>,
+                            <DeleteFilled onClick={()=>deleteTask(task.id)} style={{fontSize: "18px", color: "#ff4d4f"}}/>,
+                            <Checkbox checked={task.done} onClick={()=>toggleTask(task.done,task.id)}/>,
                         ]}
                     />
                 </TaskItem>

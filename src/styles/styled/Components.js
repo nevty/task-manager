@@ -42,6 +42,24 @@ export const TaskItem = styled(List.Item)`
     box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
     background: #ffffff;
     border-radius: 3px;
+    position: relative;
+    .actions {
+      position: absolute;
+      z-index: 1;
+      right: 5px;
+      top: 5px;
+      button {
+        opacity: .6;
+      }
+    }
+    
+    &:hover {
+      .actions {
+        button {
+          opacity: 1;
+        }
+      }
+    }
 `
 
 export const Button = styled.button`
