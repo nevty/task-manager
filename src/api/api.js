@@ -2,17 +2,41 @@ import authAPI from "./auth";
 import firebase from "firebase/app";
 
 const storageAPI = {
-    async getTasks(boardId,listId) {
+    async getTasks(boardId, listId) {
         const board = JSON.parse(localStorage.getItem(boardId));
-        return board && board.tasks.filter(t=>t.list_id === listId);
+        return board && board.tasks.filter(t => t.list_id === listId);
     },
-    createTask(data, boardId,listId) {
+    createTask(data, boardId, listId) {
         let board = JSON.parse(localStorage.getItem(boardId));
         data.id = generateId();
         data.list_id = listId;
+        data.done = false;
         if (!board.tasks) board.tasks = [];
         let newBoard = {...board, tasks: [...board.tasks, data]};
         localStorage.setItem(boardId, JSON.stringify(newBoard))
+    },
+    async toggleTask(boolean, taskId, listId, boardId) {
+        let board = JSON.parse(localStorage.getItem(boardId));
+        let newBoard = {
+            ...board,
+            tasks: [
+                ...board.tasks.filter(t => t.list_id === listId)
+                    .map(t => t.id === taskId ? {...t, done: boolean} : t)
+            ]
+        };
+        localStorage.setItem(boardId, JSON.stringify(newBoard))
+
+    },
+    async deleteTask(taskId, list_id, boardId) {
+        const board = JSON.parse(localStorage.getItem(boardId));
+        const tasks = board.tasks;
+        localStorage.setItem(
+            boardId,
+            JSON.stringify({
+                ...board,
+                tasks: [...tasks.filter(t => t.id !== taskId)]
+            })
+        )
     },
     async getLists(boardId) {
         const board = JSON.parse(localStorage.getItem(boardId));
@@ -66,7 +90,7 @@ const storageAPI = {
 
 export const firebaseAPI = {
     boardRef: () => firebase.database().ref(`/boards`),
-    async getTasks(boardId,listId) {
+    async getTasks(boardId, listId) {
         const uid = authAPI.getUid();
         if (uid) {
             return await this.boardRef()
@@ -86,8 +110,9 @@ export const firebaseAPI = {
                 });
         }
     },
-    createTask(data, boardId,list_id) {
+    createTask(data, boardId, list_id) {
         const uid = authAPI.getUid();
+        data.done = false;
         if (uid) {
             this.boardRef()
                 .child(uid)
@@ -95,6 +120,32 @@ export const firebaseAPI = {
                 .child('tasks')
                 .child(list_id)
                 .push(data)
+        }
+    },
+    async toggleTask(boolean, taskId, list_id, boardId) {
+        const uid = authAPI.getUid();
+        if (uid) {
+            this.boardRef()
+                .child(uid)
+                .child(boardId)
+                .child('tasks')
+                .child(list_id)
+                .child(taskId)
+                .update({
+                    done: boolean
+                })
+        }
+    },
+    async deleteTask(taskId, list_id, boardId) {
+        const uid = authAPI.getUid();
+        if (uid) {
+            this.boardRef()
+                .child(uid)
+                .child(boardId)
+                .child('tasks')
+                .child(list_id)
+                .child(taskId)
+                .remove()
         }
     },
     async getLists(boardId) {
