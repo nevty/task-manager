@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from "react";
 import dbAPI from "api/api";
-import NewTaskList from "./TaskList/NewTaskList";
+import NewTaskList from "./Tasks/NewTaskList";
 import {List} from "antd";
-import TaskList from "./TaskList/TaskList";
+import Tasks from "./Tasks/Tasks";
 
 const BoardSpace = ({match}) => {
     const [boardState, setBoard] = useState();
@@ -28,7 +28,7 @@ const BoardSpace = ({match}) => {
                 dataSource={listsState}
                 renderItem={list => (
                     <List.Item>
-                        <TaskList list={list} boardId={boardId}/>
+                        <Tasks list={list} boardId={boardId}/>
                     </List.Item>
                 )}
             />

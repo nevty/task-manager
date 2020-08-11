@@ -28,7 +28,7 @@ export const Card = styled(CardAntD)`
     }
 `
 
-export const StyledList = styled(List)`
+export const TaskList = styled(List)`
     width: 280px;
     .ant-list-header {
       overflow-x: hidden;
@@ -36,7 +36,7 @@ export const StyledList = styled(List)`
     }
 `
 
-export const StyledItem = styled(List.Item)`
+export const TaskItem = styled(List.Item)`
     padding: 4px;
     margin: 8px;
     box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
