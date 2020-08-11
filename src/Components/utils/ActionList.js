@@ -4,12 +4,11 @@ import ClickAwayListener from "react-click-away-listener";
 
 const ActionList = (
     {
-        actions, toggleIcon, mode = "click",
-        expanded = false, direction = "left",
+        actions, toggleIcon, mode = "click", direction = "left",
         className,
         ...props
     }) => {
-    const [toggled, toggle] = useState(expanded);
+    const [toggled, toggle] = useState(false);
 
     const handleClick = () => toggle(!toggled);
     const handleOpen = () => toggle(true);
@@ -19,16 +18,14 @@ const ActionList = (
             {...props}
             className={className}
             onClickAway={handleClose}
+            onMouseEnter={mode === "hover" ? handleOpen : null}
+            onMouseLeave={mode === "hover" ? handleClose : null}
         >
-            {toggleIcon &&
-                <Toggle
-                    onClick={mode === "click" ? handleClick : null}
-                    onMouseEnter={mode === "hover" ? handleOpen : null}
-                    onMouseLeave={mode === "hover" ? handleClose : null}
-                >
-                    {toggleIcon}
-                </Toggle>
-            }
+            <Toggle
+                onClick={mode === "click" ? handleClick : null}
+            >
+                {toggleIcon}
+            </Toggle>
             <List toggled={toggled} direction={direction}>
                 {
                     actions.map((Element, index) => <li key={index}>{Element}</li>)
@@ -47,7 +44,7 @@ const Toggle = styled.button`
     background: transparent;
 `
 
-const ClickWrapper = ({onClickAway, children, ...props}) => (
+const ClickWrapper = ({ onClickAway, children, ...props }) => (
     <ClickAwayListener onClickAway={onClickAway} {...props}>
         {children}
     </ClickAwayListener>
@@ -66,12 +63,18 @@ const List = styled.ul`
     position: absolute;
     top: 0;
     ${props => props.direction === "right" ? "left" : "right"}: 100%;
+    ${props => !props.toggled && "width: 0"};
+    height: 100%;
     display: flex;
     flex-wrap: nowrap;
     justify-content: start;
     align-content: center;
     li {
+      display: flex;
+      justify-content: center;
+      align-items: center;
       cursor: pointer;
+      user-select: none;
       margin-${props => props.direction === "right" ? "left" : "right"}: 10px;
       ${props => props.toggled ? "transform: scale(1)" : "transform: scale(0)"}
     }
