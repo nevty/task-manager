@@ -36,6 +36,14 @@ export const StyledList = styled(List)`
     }
 `
 
+export const StyledItem = styled(List.Item)`
+    padding: 4px;
+    margin: 8px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    background: #ffffff;
+    border-radius: 3px;
+`
+
 export const Button = styled.button`
     display: inline-block;
     color: black;
