@@ -18,7 +18,9 @@ const BoardSpace = ({match}) => {
             .catch(e => console.log(e));
     }, [boardId]);
     useEffect(() => {
-        if (boardState && boardState.title) document.title = boardState.title
+        const title = document.title;
+        if (boardState && boardState.title) document.title = boardState.title;
+        return ()=> {document.title = title};
     }, [boardState]);
     return (
         <div className="board">
