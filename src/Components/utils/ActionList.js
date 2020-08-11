@@ -21,12 +21,11 @@ const ActionList = ({ actions, toggleIcon, mode = "click", className, ...props }
             >
                 {toggleIcon}
             </Toggle>
-            <List>
+            <List expanded={expanded}>
                 {
                     actions.map((Element, index) => (
                         <ListItem
                             key={index}
-                            expanded={expanded}
                         >
                             {Element}
                         </ListItem>
@@ -58,6 +57,12 @@ const Wrapper = styled(ClickWrapper)`
     height: 22px;
 `
 
+const ListItem = styled.li`
+    margin-right: 10px;
+    cursor: pointer;
+    
+`
+
 const List = styled.ul`
     padding: 0;
     margin: 0;
@@ -69,15 +74,12 @@ const List = styled.ul`
     flex-wrap: nowrap;
     justify-content: start;
     align-content: center;
-`
-
-const ListItem = styled.li`
-    margin-right: 10px;
-    cursor: pointer;
-    ${({ expanded }) => expanded ?
+    ${ListItem}{
+        ${props => props.expanded ?
     "transform: scale(1)"
     :
     "transform: scale(0)"}
+    }
 `
 
 export default ActionList
