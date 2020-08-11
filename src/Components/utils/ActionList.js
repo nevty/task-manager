@@ -2,10 +2,16 @@ import React, {useState} from 'react';
 import styled from "styled-components"
 import ClickAwayListener from "react-click-away-listener";
 
-const ActionList = ({ actions, toggleIcon, mode = "click", className, ...props }) => {
-    const [expanded, toggle] = useState(false);
+const ActionList = (
+    {
+        actions, toggleIcon, mode = "click",
+        expanded = false, direction = "left",
+        className,
+        ...props
+    }) => {
+    const [toggled, toggle] = useState(expanded);
 
-    const handleClick = () => toggle(!expanded);
+    const handleClick = () => toggle(!toggled);
     const handleOpen = () => toggle(true);
     const handleClose = () => toggle(false);
     return (
@@ -14,22 +20,18 @@ const ActionList = ({ actions, toggleIcon, mode = "click", className, ...props }
             className={className}
             onClickAway={handleClose}
         >
-            <Toggle
-                onClick={mode === "click" ? handleClick : null}
-                onMouseEnter={mode === "hover" ? handleOpen : null}
-                onMouseLeave={mode === "hover" ? handleClose : null}
-            >
-                {toggleIcon}
-            </Toggle>
-            <List expanded={expanded}>
+            {toggleIcon &&
+                <Toggle
+                    onClick={mode === "click" ? handleClick : null}
+                    onMouseEnter={mode === "hover" ? handleOpen : null}
+                    onMouseLeave={mode === "hover" ? handleClose : null}
+                >
+                    {toggleIcon}
+                </Toggle>
+            }
+            <List toggled={toggled} direction={direction}>
                 {
-                    actions.map((Element, index) => (
-                        <ListItem
-                            key={index}
-                        >
-                            {Element}
-                        </ListItem>
-                    ))
+                    actions.map((Element, index) => <li key={index}>{Element}</li>)
                 }
             </List>
         </Wrapper>
@@ -45,7 +47,7 @@ const Toggle = styled.button`
     background: transparent;
 `
 
-const ClickWrapper = ({ onClickAway, children, ...props }) => (
+const ClickWrapper = ({onClickAway, children, ...props}) => (
     <ClickAwayListener onClickAway={onClickAway} {...props}>
         {children}
     </ClickAwayListener>
@@ -57,28 +59,21 @@ const Wrapper = styled(ClickWrapper)`
     height: 22px;
 `
 
-const ListItem = styled.li`
-    margin-right: 10px;
-    cursor: pointer;
-    
-`
-
 const List = styled.ul`
     padding: 0;
     margin: 0;
     list-style: none;
     position: absolute;
     top: 0;
-    right: 100%;
+    ${props => props.direction === "right" ? "left" : "right"}: 100%;
     display: flex;
     flex-wrap: nowrap;
     justify-content: start;
     align-content: center;
-    ${ListItem}{
-        ${props => props.expanded ?
-    "transform: scale(1)"
-    :
-    "transform: scale(0)"}
+    li {
+      cursor: pointer;
+      margin-${props => props.direction === "right" ? "left" : "right"}: 10px;
+      ${props => props.toggled ? "transform: scale(1)" : "transform: scale(0)"}
     }
 `
 
