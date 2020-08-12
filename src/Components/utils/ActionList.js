@@ -52,8 +52,6 @@ const ClickWrapper = ({ onClickAway, children, ...props }) => (
 
 const Wrapper = styled(ClickWrapper)`
     position: relative;
-    width: 18px;
-    height: 22px;
 `
 
 const List = styled.ul`

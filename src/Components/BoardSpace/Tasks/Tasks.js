@@ -4,7 +4,7 @@ import {TaskItem, TaskList} from "styles/styled/Components";
 import ActionList from "Components/utils/ActionList";
 import NewTask from "./NewTask";
 import dbAPI from "api/api";
-import {DeleteFilled, MoreOutlined} from "@ant-design/icons";
+import {DeleteFilled, EditFilled} from "@ant-design/icons";
 
 const Tasks = ({list, boardId}) => {
     const [tasks, setTasks] = useState([]);
@@ -41,10 +41,10 @@ const Tasks = ({list, boardId}) => {
                         className="actions"
                         direction="right"
                         mode="hover"
-                        toggleIcon={<MoreOutlined style={{cursor: "pointer"}}/>}
+                        toggleIcon={<EditFilled/>}
                         actions={[
                             <DeleteFilled onClick={()=>deleteTask(task.id)} style={{fontSize: "18px", color: "#ff4d4f"}}/>,
-                            <Checkbox checked={task.done} onClick={()=>toggleTask(task.done,task.id)}/>,
+                            <Checkbox checked={task.done} onClick={()=>toggleTask(task.done,task.id)} />,
                         ]}
                     />
                 </TaskItem>

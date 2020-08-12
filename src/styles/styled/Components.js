@@ -48,16 +48,25 @@ export const TaskItem = styled(List.Item)`
       z-index: 1;
       right: 5px;
       top: 5px;
+      ul {
+        padding-left: 5px;
+      }
       button {
+        display: none;
         opacity: .6;
+        background-clip: padding-box;
+        background-origin: padding-box;
+        border-radius: 3px;
+        padding: 0 4px;
       }
     }
-    
     &:hover {
-      .actions {
-        button {
-          opacity: 1;
-        }
+      .actions button {
+        display: block;
+      }
+      .actions:hover button {
+        background-color: rgba(0,0,0,.1);
+        opacity: .9;
       }
     }
 `
