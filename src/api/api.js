@@ -20,8 +20,7 @@ const storageAPI = {
         let newBoard = {
             ...board,
             tasks: [
-                ...board.tasks.filter(t => t.list_id === listId)
-                    .map(t => t.id === taskId ? {...t, done: boolean} : t)
+                ...board.tasks.map(t => t.id === taskId ? {...t, done: boolean} : t)
             ]
         };
         localStorage.setItem(boardId, JSON.stringify(newBoard))
