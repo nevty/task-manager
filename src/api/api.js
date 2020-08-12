@@ -48,6 +48,18 @@ const storageAPI = {
         let newBoard = {...board, lists: [...board.lists, data]};
         localStorage.setItem(boardId, JSON.stringify(newBoard))
     },
+    async changeListTitle(boardId, id, title) {
+        let board = JSON.parse(localStorage.getItem(boardId));
+        let newBoard = {
+            ...board,
+            lists: [
+                ...board.lists.map(L => {
+                    if (L.id === id) L.title = title;
+                    return L
+                })]
+        };
+        localStorage.setItem(boardId, JSON.stringify(newBoard))
+    },
     async deleteList(boardId, id) {
         const board = JSON.parse(localStorage.getItem(boardId));
         const lists = board.lists;
@@ -174,6 +186,17 @@ export const firebaseAPI = {
                 .child(boardId)
                 .child('lists')
                 .push(data)
+        }
+    },
+    async changeListTitle(boardId, id, title) {
+        const uid = authAPI.getUid();
+        if (uid) {
+            return await this.boardRef()
+                .child(uid)
+                .child(boardId)
+                .child('lists')
+                .child(id)
+                .update({title})
         }
     },
     async deleteList(boardId, id) {
