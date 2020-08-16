@@ -33,6 +33,13 @@ export const TaskList = styled(List)`
     .ant-list-header {
       overflow-x: hidden;
       text-overflow: ellipsis;
+      padding-right: 34px;
+      padding-left: 34px;
+    }
+    .list__actions {
+      position: absolute;
+      right: 10px;
+      z-index: 1;
     }
 `
 
@@ -43,7 +50,7 @@ export const TaskItem = styled(List.Item)`
     background: #ffffff;
     border-radius: 3px;
     position: relative;
-    .actions {
+    .task__actions {
       position: absolute;
       z-index: 1;
       right: 5px;
@@ -61,10 +68,10 @@ export const TaskItem = styled(List.Item)`
       }
     }
     &:hover {
-      .actions button {
+      .task__actions button {
         display: block;
       }
-      .actions:hover button {
+      .task__actions:hover button {
         background-color: rgba(0,0,0,.1);
         opacity: .9;
       }
