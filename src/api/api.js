@@ -4,7 +4,7 @@ import firebase from "firebase/app";
 const storageAPI = {
     async getTasks(boardId, listId) {
         const board = JSON.parse(localStorage.getItem(boardId));
-        return board && board.tasks.filter(t => t.list_id === listId);
+        return board && board.tasks && board.tasks.filter(t => t.list_id === listId);
     },
     createTask(data, boardId, listId) {
         let board = JSON.parse(localStorage.getItem(boardId));
